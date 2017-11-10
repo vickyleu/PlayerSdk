@@ -47,16 +47,21 @@ public class FFmpegUtils {
         int w = player.getWidth();
         int h = player.getHeight();
         String filename = new Md5FileNameGenerator().generate(path);
-        builder.command("ffmpeg",
+
+        filename=String.format(Locale.CHINA, "%s/com/superfactory/PlaySdk/%s.jpg",
+                Environment.getExternalStorageDirectory().getAbsolutePath(),filename);
+//        String pkg = player.getContext().getPackageName().replaceAll(".","/");
+//        builder.command("/data/app-lib/com.superfactory.player/ffmpeg",
+        builder.command("/data/data/"+"com.superfactory.player"+"/files/ffmpeg",
                 "-i", path,//流媒体地址
-               /* "-y",//覆盖文件,文件已经存在的话，不经提示就覆盖掉*/
+                "-y",//覆盖文件,文件已经存在的话，不经提示就覆盖掉
                /* "-t","0.001",//设置纪录时间 hh:mm:ss[.xxx]格式的记录时间也支持*/
                 "-f", "image2",//以图片格式保存
                 "-ss", "0", //从指定的时间(s)开始
                 "-vframes", String.format(Locale.CHINA, "%dx%d", w, h),//设置获取1桢的视频
                 "-v ",//verbose 啰嗦模式
-                "-s", "1"    //指定分辨率,-s参数不写,则输出大小与输入一样
-               /* String.format(Locale.CHINA, "tmp/superfactory/PlaySdk/%s.jpg", filename)*/
+                "-s", "1",   //指定分辨率,-s参数不写,则输出大小与输入一样
+                filename //文件缓存路径
         );
         builder.redirectErrorStream(false);
 
